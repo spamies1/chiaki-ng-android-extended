@@ -1,3 +1,4 @@
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,15 +15,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center">
+
         <SurfaceView
             android:id="@+id/surfaceView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
         <android.opengl.GLSurfaceView
             android:id="@+id/debandSurfaceView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"/>
+
         <com.metallic.chiaki.touchcontrols.TouchpadView
             android:id="@+id/streamTouchpadView"
             android:layout_width="match_parent"
@@ -30,6 +34,7 @@
             android:visibility="gone"
             app:drawableIdle="@android:color/transparent"
             app:drawablePressed="@android:color/transparent" />
+
     </com.metallic.chiaki.stream.AspectRatioFrameLayout>
 
     <ProgressBar
@@ -38,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 
-    <!-- Hide the fragment that hosts the on-screen controls -->
+    <!-- Keep the fragment for View Binding compatibility, but hide it. -->
     <fragment
         android:id="@+id/controlsFragment"
         android:name="com.metallic.chiaki.touchcontrols.DefaultTouchControlsFragment"
@@ -46,6 +51,8 @@
         android:layout_height="match_parent"
         android:visibility="gone"/>
 
+    <!-- Keep the overlay because StreamActivity references binding.overlay.
+         It is completely transparent. -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/overlay"
         android:layout_width="match_parent"
@@ -53,7 +60,8 @@
         android:fitsSystemWindows="true"
         android:background="@android:color/transparent">
 
-        <!-- Hide the bottom control bar entirely -->
+        <!-- Keep required views for StreamActivity/View Binding,
+             but make the entire control bar invisible. -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -93,25 +101,30 @@
                     android:id="@+id/display_mode_normal_button"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/transparent"
                     app:icon="@drawable/ic_display_normal"
                     app:iconTint="@color/stream_material_button_icon_tint"
-                    app:strokeColor="@color/stream_text"/>
+                    app:strokeColor="@android:color/transparent"/>
+
                 <com.google.android.material.button.MaterialButton
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:id="@+id/display_mode_zoom_button"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/transparent"
                     app:icon="@drawable/ic_display_zoom"
                     app:iconTint="@color/stream_material_button_icon_tint"
-                    app:strokeColor="@color/stream_text"/>
+                    app:strokeColor="@android:color/transparent"/>
+
                 <com.google.android.material.button.MaterialButton
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:id="@+id/display_mode_stretch_button"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/transparent"
                     app:icon="@drawable/ic_display_stretch"
                     app:iconTint="@color/stream_material_button_icon_tint"
-                    app:strokeColor="@color/stream_text"/>
+                    app:strokeColor="@android:color/transparent"/>
 
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -120,3 +133,4 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
+```
