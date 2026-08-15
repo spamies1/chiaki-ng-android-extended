@@ -38,12 +38,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 
+    <!-- Hide the fragment that hosts the on-screen controls -->
     <fragment
         android:id="@+id/controlsFragment"
         android:name="com.metallic.chiaki.touchcontrols.DefaultTouchControlsFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/overlay"
@@ -52,6 +53,7 @@
         android:fitsSystemWindows="true"
         android:background="@android:color/transparent">
 
+        <!-- Hide the bottom control bar entirely -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,7 +61,8 @@
             android:background="@android:color/transparent"
             android:padding="8dp"
             android:clickable="false"
-            android:focusable="false">
+            android:focusable="false"
+            android:visibility="gone">
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/onScreenControlsSwitch"
@@ -70,8 +73,8 @@
                 android:text="On-Screen Controls"
                 app:switchPadding="8dp"
                 android:layout_marginLeft="8dp"
-                android:textColor="@color/stream_text"/>
-
+                android:textColor="@color/stream_text"
+                android:visibility="gone"/>
 
             <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/displayModeToggle"
@@ -82,7 +85,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:singleSelection="true"
                 app:selectionRequired="true"
-                app:checkedButton="@id/display_mode_normal_button">
+                app:checkedButton="@id/display_mode_normal_button"
+                android:visibility="gone">
 
                 <com.google.android.material.button.MaterialButton
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -109,10 +113,10 @@
                     app:iconTint="@color/stream_material_button_icon_tint"
                     app:strokeColor="@color/stream_text"/>
 
-        </com.google.android.material.button.MaterialButtonToggleGroup>
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
