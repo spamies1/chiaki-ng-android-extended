@@ -49,15 +49,16 @@
         android:id="@+id/overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:background="@android:color/transparent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@color/stream_overlay_background"
+            android:background="@android:color/transparent"
             android:padding="8dp"
-            android:clickable="true"
+            android:clickable="false"
             android:focusable="false">
 
             <com.google.android.material.switchmaterial.SwitchMaterial
