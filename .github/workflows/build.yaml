@@ -1,0 +1,75 @@
+name: Build Custom Chiaki APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Ensure Git submodules initialized
+        run: |
+          git submodule sync --recursive
+          git submodule update --init --recursive
+
+      - name: Patch Oboe resampler files to include <cassert>
+        run: |
+          files=(
+            "android/app/src/main/cpp/oboe/src/flowgraph/resampler/PolyphaseResampler.cpp"
+            "android/app/src/main/cpp/oboe/src/flowgraph/resampler/PolyphaseResamplerMono.cpp"
+            "android/app/src/main/cpp/oboe/src/flowgraph/resampler/SincResampler.cpp"
+            "android/app/src/main/cpp/oboe/src/flowgraph/resampler/PolyphaseResamplerStereo.cpp"
+            "android/app/src/main/cpp/oboe/src/flowgraph/resampler/SincResamplerStereo.cpp"
+          )
+          for f in "${files[@]}"; do
+            if [ -f "$f" ]; then
+              if ! grep -q '^#include <cassert>' "$f"; then
+                echo "Patching $f"
+                sed -i '1i#include <cassert>' "$f"
+              else
+                echo "Already has <cassert>: $f"
+              fi
+            else
+              echo "File not found (skipping): $f"
+            fi
+          done
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+            python3 \
+            python3-protobuf \
+            protobuf-compiler \
+            libidn2-0-dev \
+            pkg-config \
+            libcurl4-openssl-dev \
+            libssl-dev \
+            libprotobuf-dev \
+            build-essential \
+            cmake
+
+      - name: Set up Java JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Build Debug APK
+        run: cd android && ./gradlew assembleDebug --no-daemon
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Custom-Chiaki-APK
+          path: android/app/build/outputs/apk/debug/*.apk
