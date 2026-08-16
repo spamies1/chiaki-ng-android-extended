@@ -301,11 +301,36 @@ class StreamActivity : AppCompatActivity()
 
 	private fun adjustStreamViewAspect() = adjustSurfaceViewAspect()
 
-	override fun dispatchKeyEvent(event: KeyEvent) =
-		viewModel.input.dispatchKeyEvent(event) || super.dispatchKeyEvent(event)
+	override fun dispatchKeyEvent(event: KeyEvent): Boolean
+{
+    val source = event.source
 
-	override fun onGenericMotionEvent(event: MotionEvent) =
-		viewModel.input.onGenericMotionEvent(event) || super.onGenericMotionEvent(event)
+    // Only forward physical/game-controller button input
+    // to the PS4 Remote Play session.
+    if ((source and InputDevice.SOURCE_GAMEPAD) == InputDevice.SOURCE_GAMEPAD ||
+        (source and InputDevice.SOURCE_JOYSTICK) == InputDevice.SOURCE_JOYSTICK)
+    {
+        return viewModel.input.dispatchKeyEvent(event)
+    }
+
+    // Ignore Android keyboard/input events.
+    return super.dispatchKeyEvent(event)
+}
+
+override fun onGenericMotionEvent(event: MotionEvent): Boolean
+{
+    val source = event.source
+
+    // Only forward analog/controller motion to the PS4.
+    if ((source and InputDevice.SOURCE_JOYSTICK) == InputDevice.SOURCE_JOYSTICK ||
+        (source and InputDevice.SOURCE_GAMEPAD) == InputDevice.SOURCE_GAMEPAD)
+    {
+        return viewModel.input.onGenericMotionEvent(event)
+    }
+
+    // Ignore non-controller motion input.
+    return super.onGenericMotionEvent(event)
+}
 }
 
 enum class TransformMode
