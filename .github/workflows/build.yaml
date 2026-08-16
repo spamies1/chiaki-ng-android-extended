@@ -64,8 +64,8 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
-        
-        - name: Restore Keystore from GitHub Secrets
+
+      - name: Restore Keystore from GitHub Secrets
         env:
           ENCODED_KEYSTORE: ${{ secrets.SIGNING_KEY_BASE64 }}
         run: |
