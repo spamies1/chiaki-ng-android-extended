@@ -81,11 +81,11 @@ jobs:
           echo "chiakiKeyAlias=$KEY_ALIAS" >> android/local.properties
           echo "chiakiKeyPW=$KEYSTORE_PW" >> android/local.properties
 
-      - name: Build Debug APK
-        run: cd android && ./gradlew assembleDebug --no-daemon
+      - name: Build Release APK
+        run: cd android && ./gradlew assembleRelease --no-daemon
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Custom-Chiaki-APK
-          path: android/app/build/outputs/apk/debug/*.apk
+          path: android/app/build/outputs/apk/Release/*.apk
