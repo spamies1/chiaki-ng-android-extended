@@ -28,6 +28,7 @@ CMakeSettings.json
 chiaki.rb
 gui/chiaking.rc
 *.jks
+*.keystore
 secret.tar
 keystore-env.sh
 compile_commands.json
