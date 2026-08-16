@@ -40,3 +40,4 @@ chiaki.conf
 .cache/
 *.vscode
 site/
+local.properties

@@ -64,6 +64,22 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        
+        - name: Restore Keystore from GitHub Secrets
+        env:
+          ENCODED_KEYSTORE: ${{ secrets.SIGNING_KEY_BASE64 }}
+        run: |
+          echo "$ENCODED_KEYSTORE" | base64 --decode > android/chiaki-release.jks
+
+      - name: Create local.properties
+        env:
+          KEYSTORE_PW: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        run: |
+          echo "chiakiKeystore=chiaki-release.jks" >> android/local.properties
+          echo "chiakiKeystorePW=$KEYSTORE_PW" >> android/local.properties
+          echo "chiakiKeyAlias=$KEY_ALIAS" >> android/local.properties
+          echo "chiakiKeyPW=$KEYSTORE_PW" >> android/local.properties
 
       - name: Build Debug APK
         run: cd android && ./gradlew assembleDebug --no-daemon
