@@ -69,7 +69,7 @@ jobs:
         env:
           ENCODED_KEYSTORE: ${{ secrets.SIGNING_KEY_BASE64 }}
         run: |
-          echo "$ENCODED_KEYSTORE" | base64 --decode > android/chiaki-release.jks
+          echo "$ENCODED_KEYSTORE" | base64 --decode > android/app/chiaki-release.jks
 
       - name: Create local.properties
         env:
